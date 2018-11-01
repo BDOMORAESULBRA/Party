@@ -97,6 +97,9 @@ public class PartyService {
         if (StringUtils.isBlank(partyInput.getName())){
             throw new GenericOutputException("Invalid name");
         }
+        if (partyInput.getNumber() == null){
+            throw new GenericOutputException("Invalid number");
+        }
     }
 
 }
