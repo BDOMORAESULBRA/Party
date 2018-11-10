@@ -2,6 +2,8 @@ package br.edu.ulbra.election.party.model;
 
 import javax.persistence.*;
 
+import br.edu.ulbra.election.party.repository.PartyRepository;
+
 @Entity
 public class Party {
 
@@ -48,6 +50,32 @@ public class Party {
 
 	public void setNumber(Integer number) {
 		this.number = number;
+	}
+
+	public static boolean verificaCode(String code, PartyRepository partyRepository) {
+
+		Iterable<Party> list = partyRepository.findAll();
+
+		for (Party e : list) {
+			if (e.getCode().equalsIgnoreCase(code)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+
+	public static boolean verificaNumber(Integer number, PartyRepository partyRepository) {
+
+		Iterable<Party> list = partyRepository.findAll();
+
+		for (Party e : list) {
+			if (e.getNumber().equals(number)) {
+				return true;
+			}
+		}
+		return false;
+
 	}
 
 }
