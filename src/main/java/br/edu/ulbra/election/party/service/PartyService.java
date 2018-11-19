@@ -1,6 +1,7 @@
 package br.edu.ulbra.election.party.service;
 
 import br.edu.ulbra.election.party.repository.PartyRepository;
+import br.edu.ulbra.election.party.client.CandidateClientService;
 import br.edu.ulbra.election.party.exception.GenericOutputException;
 import br.edu.ulbra.election.party.input.v1.PartyInput;
 import br.edu.ulbra.election.party.model.Party;
@@ -22,13 +23,17 @@ public class PartyService {
 
 	private final ModelMapper modelMapper;
 
+	private final CandidateClientService candidateClientService;
+
 	private static final String MESSAGE_INVALID_ID = "Invalid id";
 	private static final String MESSAGE_PARTY_NOT_FOUND = "Party not found";
 
 	@Autowired
-	public PartyService(PartyRepository partyRepository, ModelMapper modelMapper) {
+	public PartyService(PartyRepository partyRepository, ModelMapper modelMapper,
+			CandidateClientService candidateClientService) {
 		this.partyRepository = partyRepository;
 		this.modelMapper = modelMapper;
+		this.candidateClientService = candidateClientService;
 	}
 
 	public List<PartyOutput> getAll() {
@@ -80,6 +85,8 @@ public class PartyService {
 			throw new GenericOutputException(MESSAGE_INVALID_ID);
 		}
 
+		verificaCandidate(partyId);
+
 		Party party = partyRepository.findById(partyId).orElse(null);
 		if (party == null) {
 			throw new GenericOutputException(MESSAGE_PARTY_NOT_FOUND);
@@ -88,6 +95,13 @@ public class PartyService {
 		partyRepository.delete(party);
 
 		return new GenericOutput("Party deleted");
+	}
+
+	private void verificaCandidate(Long partyId) {
+
+		if (candidateClientService.verificaParty(partyId) != null) {
+			throw new GenericOutputException("Exists candidates");
+		}
 	}
 
 	private void validateInput(PartyInput partyInput, PartyRepository partyRepository) {
