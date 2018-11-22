@@ -25,7 +25,7 @@ public class CandidateClientService {
 	@FeignClient(value = "candidate-service", url = "${url.candidate-service}")
 	private interface CandidateClient {
 
-		@GetMapping("/v1/candidate/{partyId}")
+		@GetMapping("/v1/candidate/getPartyCandidate/{partyId}")
 		CandidateOutput verificaParty(@PathVariable(name = "partyId") Long partyId);
 	}
 }

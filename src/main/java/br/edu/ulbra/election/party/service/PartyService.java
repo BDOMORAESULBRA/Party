@@ -1,6 +1,7 @@
 package br.edu.ulbra.election.party.service;
 
 import br.edu.ulbra.election.party.repository.PartyRepository;
+import feign.FeignException;
 import br.edu.ulbra.election.party.client.CandidateClientService;
 import br.edu.ulbra.election.party.exception.GenericOutputException;
 import br.edu.ulbra.election.party.input.v1.PartyInput;
@@ -20,9 +21,7 @@ import java.util.List;
 public class PartyService {
 
 	private final PartyRepository partyRepository;
-
 	private final ModelMapper modelMapper;
-
 	private final CandidateClientService candidateClientService;
 
 	private static final String MESSAGE_INVALID_ID = "Invalid id";
@@ -99,8 +98,13 @@ public class PartyService {
 
 	private void verificaCandidate(Long partyId) {
 
-		if (candidateClientService.verificaParty(partyId) != null) {
-			throw new GenericOutputException("Exists candidates");
+		try {
+			candidateClientService.verificaParty(partyId);
+			throw new GenericOutputException("Exists candidates!");
+		} catch (FeignException e) {
+			if (e.status() != 500) {
+				throw new GenericOutputException("Error");
+			}
 		}
 	}
 
