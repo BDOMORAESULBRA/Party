@@ -5,10 +5,8 @@ import br.edu.ulbra.election.party.output.v1.GenericOutput;
 import br.edu.ulbra.election.party.output.v1.PartyOutput;
 import br.edu.ulbra.election.party.service.PartyService;
 import io.swagger.annotations.ApiOperation;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,9 +16,9 @@ public class PartyApi {
 	private final PartyService partyService;
 
 	@Autowired
-	 public PartyApi(PartyService partyService){
-	     this.partyService = partyService;
-	    }
+	public PartyApi(PartyService partyService) {
+		this.partyService = partyService;
+	}
 
 	@GetMapping("/")
 	@ApiOperation(value = "Get parties List")

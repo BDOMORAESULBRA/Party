@@ -1,7 +1,6 @@
 package br.edu.ulbra.election.party.model;
 
 import javax.persistence.*;
-
 import br.edu.ulbra.election.party.repository.PartyRepository;
 
 @Entity
@@ -75,7 +74,6 @@ public class Party {
 			}
 		}
 		return false;
-
 	}
 
 }
